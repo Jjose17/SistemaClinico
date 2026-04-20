@@ -106,6 +106,6 @@ public class Persona {
         return "Persona{" + "id=" + id + ", nombre=" + nombre + ", apellido=" + apellido + ", documento=" + documento + ", telefono=" + telefono + ", correo=" + correo + ", activo=" + activo + '}';
     }
     
-   
+   //Lo paso a la rama de entidades en git
     
 }
