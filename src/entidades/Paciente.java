@@ -11,27 +11,13 @@ public class Paciente extends Persona{
     public Paciente(){
         
     }
-    public Paciente(int id, String nombre, String apellido, String documento,
-            String telefono, String correo, boolean activo, int edad,
-            String direccion, String historialMedico, Integer prepagadaID ){
-        
-        
-        //Estos son los atributos propios de esta clase
-        super(id, nombre, apellido, documento, telefono, correo, activo);
-        this.edad = edad;
-        this.direccion = direccion;
-        this.historialMedico = historialMedico;
-        this.prepagadaID = prepagadaID;
-    }
 
     public int getEdad() {
         return edad;
     }
 
     public void setEdad(int edad) {
-        if(edad < 0){
-            throw new IllegalArgumentException("La edad no puede ser menor a 0");
-        }
+        this.edad = edad;
     }
 
     public String getDireccion() {
@@ -57,6 +43,15 @@ public class Paciente extends Persona{
     public void setPrepagadaID(Integer prepagadaID) {
         this.prepagadaID = prepagadaID;
     }
+
+    @Override
+    public String toString() {
+        return "Paciente: " + getNombre() + "edad=" + getEdad() + ", direccion=" + direccion + ", historialMedico=" + historialMedico + ", prepagadaID=" + prepagadaID + '}';
+    }
+
+
+ 
+    
     
     
 }

@@ -30,10 +30,7 @@ public class Persona {
     }
 
     public void setId(int id) {
-        if(id < 0){
-            throw new IllegalArgumentException("ID invalido");
-        }
-        this.id=id;
+        this.id = id;
     }
 
     public String getNombre() {
@@ -41,9 +38,6 @@ public class Persona {
     }
 
     public void setNombre(String nombre) {
-        if(nombre == null || nombre.trim().isEmpty()){
-            throw new IllegalArgumentException("Ingrese un Nombre");
-        } 
         this.nombre = nombre;
     }
 
@@ -52,10 +46,7 @@ public class Persona {
     }
 
     public void setApellido(String apellido) {
-       if(apellido == null || apellido.trim().isEmpty()){
-           throw new IllegalArgumentException("Ingrese un apellido");
-       }
-       this.apellido = apellido;
+        this.apellido = apellido;
     }
 
     public String getDocumento() {
@@ -63,10 +54,7 @@ public class Persona {
     }
 
     public void setDocumento(String documento) {
-       if(documento == null || documento.trim().isEmpty()){
-           throw new IllegalArgumentException("Numero de documento invalido");
-       }
-       this.documento = documento;
+        this.documento = documento;
     }
 
     public String getTelefono() {
@@ -74,9 +62,6 @@ public class Persona {
     }
 
     public void setTelefono(String telefono) {
-        if(telefono != null || telefono.length()>20){ //usamos el != para validar datos que puedan haber. Otra manera es que es para validar campos opcionales que puedan contener datos
-            throw new IllegalArgumentException("El numero del telefono es muy largo");
-        }
         this.telefono = telefono;
     }
 
@@ -85,11 +70,6 @@ public class Persona {
     }
 
     public void setCorreo(String correo) {
-        if(correo != null){ //Si el correo no es null eso significa que el usuario ingreso un valor y asi se puede asignar y hacer la validacion
-            throw new IllegalArgumentException("Correo invalido");
-            
-            //Toca poner lo del @ con el constrains 
-        }
         this.correo = correo;
     }
 
@@ -105,7 +85,6 @@ public class Persona {
     public String toString() {
         return "Persona{" + "id=" + id + ", nombre=" + nombre + ", apellido=" + apellido + ", documento=" + documento + ", telefono=" + telefono + ", correo=" + correo + ", activo=" + activo + '}';
     }
-    
-   //Lo paso a la rama de entidades en git
-    
+
+   
 }

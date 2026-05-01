@@ -23,6 +23,10 @@ public class Secretaria extends Persona{
     public void setTurno(String turno) {
         this.turno = turno;
     }
-    
+
+    @Override
+    public String toString() {
+        return "Secretaria{" + "turno=" + turno + '}';
+    }
     
 }
