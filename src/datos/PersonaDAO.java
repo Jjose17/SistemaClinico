@@ -49,6 +49,8 @@ public class PersonaDAO implements CrudSimpleInterface<Persona>{
         return registros;
     }
     
+    
+    
     @Override
     public boolean insertar(Persona obj){
         resp = false;
