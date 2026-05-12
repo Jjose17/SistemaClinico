@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 15-04-2026 a las 23:11:57
+-- Tiempo de generación: 12-05-2026 a las 01:33:08
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -98,12 +98,43 @@ CREATE TABLE `prepagada` (
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `rol`
+--
+
+CREATE TABLE `rol` (
+  `id` int(11) NOT NULL,
+  `nombre` varchar(20) NOT NULL,
+  `descripcion` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `secretaria`
 --
 
 CREATE TABLE `secretaria` (
   `id` int(11) NOT NULL,
   `turno` varchar(50) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `usuario`
+--
+
+CREATE TABLE `usuario` (
+  `id` int(11) NOT NULL,
+  `rol_id` int(11) NOT NULL,
+  `nombre` varchar(70) NOT NULL,
+  `tipo_documento` varchar(20) DEFAULT NULL,
+  `num_documento` varchar(20) DEFAULT NULL,
+  `direccion` varchar(70) DEFAULT NULL,
+  `telefono` varchar(20) DEFAULT NULL,
+  `correo` varchar(100) NOT NULL,
+  `clave` varchar(128) NOT NULL,
+  `activo` bit(1) NOT NULL DEFAULT b'1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
@@ -147,10 +178,26 @@ ALTER TABLE `prepagada`
   ADD UNIQUE KEY `nombre_UNIQUE` (`nombre`);
 
 --
+-- Indices de la tabla `rol`
+--
+ALTER TABLE `rol`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `nombre_UNIQUE` (`nombre`);
+
+--
 -- Indices de la tabla `secretaria`
 --
 ALTER TABLE `secretaria`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `usuario`
+--
+ALTER TABLE `usuario`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `correo_UNIQUE` (`correo`),
+  ADD UNIQUE KEY `num_documento_UNIQUE` (`num_documento`),
+  ADD KEY `fk_usuario_rol_idx` (`rol_id`);
 
 --
 -- AUTO_INCREMENT de las tablas volcadas
@@ -172,6 +219,18 @@ ALTER TABLE `persona`
 -- AUTO_INCREMENT de la tabla `prepagada`
 --
 ALTER TABLE `prepagada`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `rol`
+--
+ALTER TABLE `rol`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `usuario`
+--
+ALTER TABLE `usuario`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
@@ -203,6 +262,12 @@ ALTER TABLE `paciente`
 --
 ALTER TABLE `secretaria`
   ADD CONSTRAINT `fk_secretaria_persona` FOREIGN KEY (`id`) REFERENCES `persona` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION;
+
+--
+-- Filtros para la tabla `usuario`
+--
+ALTER TABLE `usuario`
+  ADD CONSTRAINT `fk_usuario_rol` FOREIGN KEY (`rol_id`) REFERENCES `rol` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
