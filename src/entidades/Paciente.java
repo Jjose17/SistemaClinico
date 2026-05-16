@@ -8,7 +8,7 @@ public class Paciente extends Persona{
     private String historialMedico;
     private Integer prepagadaID; //Con esto podremos conectar la prepagada con el paciente que la tenga 
     
-    public Paciente(){
+    public Paciente(int aInt, String string, String string1, String string2, String string3, String string4, boolean aBoolean, int aInt1, String string5, String string6, Integer par){
         
     }
 
