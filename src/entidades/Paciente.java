@@ -5,6 +5,7 @@ public class Paciente extends Persona {
     private int edad;
     private String direccion;
     private String historialMedico;
+<<<<<<< HEAD
     private Integer prepagadaID;
 
     public Paciente() {
@@ -12,6 +13,11 @@ public class Paciente extends Persona {
 
     public Paciente(int id, String nombre, String apellido, String documento, String telefono, String correo,
             boolean activo, int edad, String direccion, String historialMedico, Integer prepagadaID) {
+=======
+    private Integer prepagadaID; //Con esto podremos conectar la prepagada con el paciente que la tenga 
+    
+    public Paciente(int aInt, String string, String string1, String string2, String string3, String string4, boolean aBoolean, int aInt1, String string5, String string6, Integer par){
+>>>>>>> datos
         
         super(id, nombre, apellido, documento, telefono, correo, activo);
         this.edad = edad;

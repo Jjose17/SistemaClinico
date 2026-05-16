@@ -26,32 +26,47 @@ public class PacienteDAO implements CrudSimpleInterface<Paciente>{
     }
     
  @Override
- public List<Paciente> listar(String texto){
-     List<Paciente> registros = new ArrayList<>();
-     try{
-         ps = CON.conectar().prepareStatement("SELECT p.id, p.apellido, p.documento, p.telefono, p.correo,"
-                 +"p.activo, pa.edad, pa.direccion, pa.historial_medico,pa.prepagada_id FROM persona p INNER JOIN paciente pa ON p.id = pa.id"
-                 + "WHERE p.nombre LIKE ?, p.apellido LIKE ?, p.documento LIKE ?"); //Con esto buscamos los pacientes que tengan nombre, apellido o documento, que esta en la tabla persona
-         ps.setString(1, "%" + texto + "%");
-         ps.setString(2, "%" + texto + "%");
-         ps.setString(3, "%" + texto + "%");
-         rs = ps.executeQuery();
-         while(rs.next()){
-             registros.add(new Paciente(rs.getInt("id"),rs.getString("nombre"), rs.getString("apellido"),
-             rs.getString("documento"), rs.getString("telefono"), rs.getString("correo"), rs.getBoolean("activo"), rs.getInt("edad"),
-             rs.getString("direccion"), rs.getString("historial_medico"), (Integer) rs.getObject("prepagada_id")));
-         }
-         ps.close();
-         rs.close();
-     }catch(SQLException e){
-         JOptionPane.showMessageDialog(null, e.getMessage());
-     }finally{
-         ps=null;
-         rs=null;
-         CON.desconectar();
-     }
-     return registros;
- }
+public List<Paciente> listar(String texto) {
+    List<Paciente> registros = new ArrayList<>();
+    try {
+        ps = CON.conectar().prepareStatement(
+            "SELECT p.id, p.nombre, p.apellido, p.documento, p.telefono, p.correo, p.activo, "
+            + "pa.edad, pa.direccion, pa.historial_medico, pa.prepagada_id "
+            + "FROM persona p "
+            + "INNER JOIN paciente pa ON p.id = pa.id "
+            + "WHERE p.nombre LIKE ? OR p.apellido LIKE ? OR p.documento LIKE ?"
+        );
+        ps.setString(1, "%" + texto + "%");
+        ps.setString(2, "%" + texto + "%");
+        ps.setString(3, "%" + texto + "%");
+        
+        rs = ps.executeQuery();
+        while (rs.next()) {
+            registros.add(new Paciente(
+                rs.getInt("id"),
+                rs.getString("nombre"), 
+                rs.getString("apellido"),
+                rs.getString("documento"),
+                rs.getString("telefono"),
+                rs.getString("correo"),
+                rs.getBoolean("activo"),
+                rs.getInt("edad"),
+                rs.getString("direccion"),
+                rs.getString("historial_medico"),
+                (Integer) rs.getObject("prepagada_id")
+            ));
+        }
+        ps.close();
+        rs.close();
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(null, e.getMessage());
+    } finally {
+        ps = null;
+        rs = null;
+        CON.desconectar();
+    }
+    return registros;
+}
 
  // Este insertar va a ser diferente, primero necesito que se "conecte" con la tabla "PACIENTE" porque persona va a heredar atributos a esta tabla
  // Asi que necesito que mantengan el mismo ID con el que se registra una persona y este ID se observe en la tabla PACIENTE
@@ -60,64 +75,53 @@ public class PacienteDAO implements CrudSimpleInterface<Paciente>{
  // Lo que se haria es que no se guarden los "cambios" y vuelva a pedir todos los datos para que asi no queden pacientes con datos vacios y generen errores
  
     @Override
-    public boolean insertar(Paciente obj) {
-        resp=false;
-        Connection cn = CON.conectar(); //con esto podemos abrir la conexion a la BD y lo guardamos en la variable
-        try{
-            cn.setAutoCommit(false); //con esto evitamos el guardado automatico que hace la BD y solo se guardaran unos cambios que nosotros completemos
-            
-// Hacemos el primer insert que va a guardar los datos de la persona y con ese ID que genera, se lo tenemos que pedir a MySQL
-            ps=cn.prepareStatement("INSERT INTO persona (nombre, apellido, documento, telefono, correo, activo) VALUES (?,?,?,?,?,1)", Statement.RETURN_GENERATED_KEYS);
+public boolean insertar(Paciente obj) {
+        resp = false;
+        Connection cn = CON.conectar();
+        try {
+            cn.setAutoCommit(false);
+            ps = cn.prepareStatement("INSERT INTO persona (nombre, apellido, documento, telefono, "
+                    + "correo, activo) VALUES (?, ?, ?, ?, ?, 1)", Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, obj.getNombre());
             ps.setString(2, obj.getApellido());
             ps.setString(3, obj.getDocumento());
             ps.setString(4, obj.getTelefono());
             ps.setString(5, obj.getCorreo());
             ps.executeUpdate();
-            rs=ps.getGeneratedKeys(); //con esto podemos obtener los datos generados junto con el ID (que por cierto, se crea como activo)
-        if(rs.next()){
-            obj.setId(rs.getInt(1));
-        }
-        rs.close();
-        ps.close();
-        
-        
-        
-        ps=cn.prepareStatement("INSER INTO paciente (id, edad, direccion, historial_medico, prepagada_id) VALUES (?,?,?,?)");
-        ps.setInt(1, obj.getId());
-        ps.setInt(2, obj.getEdad());
-        ps.setString(3, obj.getDireccion());
-        ps.setString(4, obj.getHistorialMedico());
-        
-        //Necesitamos revisar que el paciente tenga o NO tenga una prepagada (No es obligatorio), entonces primero preguntamos si el paciente tiene una prepagada
-        // Si no llega a tener una prepagada, manda un NULL a esa columna, pero si llega a tener una prepagada, entonces manda el ID de la prepagada a la columna 
-       if(obj.getPrepagadaID() == null){
-           ps.setNull(5, java.sql.Types.INTEGER);
-       }else{
-            ps.setInt(5, obj.getPrepagadaID());
-        }
-       resp=ps.executeUpdate() > 0; //Mira el INSERT de paciente y si inserto una columna almenos, resp queda en true
-       cn.commit(); //Mira y nos confirma que si hayan insertado en las dos tablas, persona y paciente
-       ps.close();
-       
-//Aca tenemos que hacer un error en caso de que no inserten en la tabla paciente, pues que borre todos los datos que se registraron 
-        
-        }catch(SQLException e){
-            try{
-                cn.rollback(); //deshace todos los cambios y no los guarda, con esto podemos hacer que si fallo una insercion y la finalizamos, no se guarde en la BD y queden campos vacios que generen erroes
-            }catch(SQLException ex){
+            rs = ps.getGeneratedKeys();
+            if (rs.next()) {
+                obj.setId(rs.getInt(1));
+            }
+            rs.close();
+            ps.close();
+
+            ps = cn.prepareStatement("INSERT INTO paciente (id, edad, direccion, historial_medico, "
+                    + "prepagada_id) VALUES (?, ?, ?, ?, ?)");
+            ps.setInt(1, obj.getId());
+            ps.setInt(2, obj.getEdad());
+            ps.setString(3, obj.getDireccion());
+            ps.setString(4, obj.getHistorialMedico());
+            if (obj.getPrepagadaID() == null) {
+                ps.setNull(5, java.sql.Types.INTEGER);
+            } else {
+                ps.setInt(5, obj.getPrepagadaID());
+            }
+            resp = ps.executeUpdate() > 0;
+            cn.commit();
+            ps.close();
+        } catch (SQLException e) {
+            try {
+                cn.rollback();
+            } catch (SQLException ex) {
                 JOptionPane.showMessageDialog(null, ex.getMessage());
             }
             JOptionPane.showMessageDialog(null, e.getMessage());
-        }finally{
-            ps=null;
-            rs=null;
-            
-            //Con estos volvemos a dejar el Autocomit en automatico, osea se activa, como estaba antes que la cambiaramos arriba
-            try{
+        } finally {
+            ps = null;
+            rs = null;
+            try {
                 cn.setAutoCommit(true);
-                
-            }catch(SQLException e){
+            } catch (SQLException e) {
                 JOptionPane.showMessageDialog(null, e.getMessage());
             }
             CON.desconectar();
@@ -126,27 +130,156 @@ public class PacienteDAO implements CrudSimpleInterface<Paciente>{
     }
 
     @Override
-    public boolean actualizar(Paciente obj) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
+public boolean actualizar(Paciente obj) {
+    resp = false;
+    Connection cn = CON.conectar();
+    try {
+        // Iniciamos la transacción desactivando el autocommit
+        cn.setAutoCommit(false);
+        
+        //  Actualizar los datos en la tabla persona
+        ps = cn.prepareStatement(
+            "UPDATE persona SET nombre = ?, apellido = ?, documento = ?, telefono = ?, correo = ? "
+                    + "WHERE id = ?"
+        );
+        ps.setString(1, obj.getNombre());
+        ps.setString(2, obj.getApellido());
+        ps.setString(3, obj.getDocumento());
+        ps.setString(4, obj.getTelefono());
+        ps.setString(5, obj.getCorreo());
+        ps.setInt(6, obj.getId());
+        
+        ps.executeUpdate();
+        ps.close();
 
-    @Override
+        // Actualizar los datos específicos en la tabla dependiente paciente
+        ps = cn.prepareStatement(
+            "UPDATE paciente SET edad = ?, direccion = ?, historial_medico = ?, prepagada_id = ? "
+                    + "WHERE id = ?"
+        );
+        ps.setInt(1, obj.getEdad());
+        ps.setString(2, obj.getDireccion());
+        ps.setString(3, obj.getHistorialMedico());
+        
+        if (obj.getPrepagadaID() == null) {
+            ps.setNull(4, java.sql.Types.INTEGER);
+        } else {
+            ps.setInt(4, obj.getPrepagadaID());
+        }
+        ps.setInt(5, obj.getId());
+        
+        ps.executeUpdate();
+        
+        // Si ambas actualizaciones se ejecutaron sin excepciones, confirmamos la transacción
+        cn.commit();
+        resp = true; 
+        ps.close();
+        
+    } catch (SQLException e) {
+        // Si ocurre un error, revertimos los cambios de ambas tablas de manera segura
+        if (cn != null) {
+            try {
+                cn.rollback();
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, "Error en rollback: " + ex.getMessage());
+            }
+        }
+        JOptionPane.showMessageDialog(null, "Error al actualizar: " + e.getMessage());
+    } finally {
+        ps = null;
+        // Restauramos el comportamiento por defecto de la conexión antes de liberar el recurso
+        if (cn != null) {
+            try {
+                cn.setAutoCommit(true);
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, e.getMessage());
+            }
+        }
+        CON.desconectar();
+    }
+    return resp;
+}
+
+
+// Voy a crear un metodo para cambiar el estado mas facil en los otros metodos.
+//Va a recibir el id del pacieente y el nuievo estado, asi ejecuta un UPDATE en persona para modificar la tabla exitosamente
+
+    private boolean cambiarEstado(int id, boolean activo) {
+        resp = false;
+        try {
+            ps = CON.conectar().prepareStatement("UPDATE persona SET activo = ? WHERE id = ?");
+            ps.setBoolean(1, activo);
+            ps.setInt(2, id);
+            resp = ps.executeUpdate() > 0;
+            ps.close();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        } finally {
+            ps = null;
+            CON.desconectar();
+        }
+        return resp;
+    }
+//reutilizamos/reescribimos el codigo de arrba, pasando el estado (arriba mencionado) y solo le ponemos el ID en false
+ @Override
     public boolean desactivar(int id) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return cambiarEstado(id, false);
     }
 
+    //Reutilizamos el codigo de estado y le ponemos el ID en true para que se active
     @Override
     public boolean activar(int id) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return cambiarEstado(id, true);
     }
 
+    //Este nos ayuda a calcular los pacientes que hay en el sistema, primero los declaramos en 0(Numero inicial)
+    // Conectamos la base de dato y enviamos la consulta, asi la BD devuelve una tabla con el total
+    //Finalmente con la condicion, podemos guardar la variable en totalRegistros y al final retornar ese resultado
     @Override
     public int total() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        int totalRegistros =0;
+        
+       try{
+           ps = CON.conectar().prepareStatement("SELECT COUNT(id) AS total FROM paciente");
+           rs=ps.executeQuery();
+           if(rs.next()){
+               totalRegistros=rs.getInt("total");
+           }
+           ps.close();
+           rs.close();
+       }catch(SQLException e){
+           JOptionPane.showMessageDialog(null, e.getMessage());
+       }finally{
+           ps=null;
+           rs=null;
+           CON.desconectar();
+       }
+       return totalRegistros;
     }
 
+    
+    //Este metodo nos va a ayudar a verificar elementos duplicados gracias al documentos
+    //primero vamos a usar un INNER JOIN (Conexion entre tablas con alias) para buscar una coincidencia con el documento
+    // Si devuelve true, existe un documento registrado, si devuelve false, ese documento no esta registrado y se puede usar
     @Override
     public boolean existe(String texto) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        
+        resp=false;
+        try{
+            ps=CON.conectar().prepareStatement("SELECT p.id FROM persona p INNER JOIN paciente pa"
+                    + " ON p.id = pa.id WHERE p.documento= ?");
+            ps.setString(1, texto);
+            rs=ps.executeQuery();
+            resp=rs.next();
+            ps.close();
+            rs.close();
+        }catch(SQLException e){
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }finally{
+            ps=null;
+            rs=null;
+            CON.desconectar();
+        }
+        return resp;
     }
 }
