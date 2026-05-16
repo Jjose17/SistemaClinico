@@ -76,88 +76,58 @@ public List<Paciente> listar(String texto) {
  
     @Override
 public boolean insertar(Paciente obj) {
-    resp = false;
-    Connection cn = CON.conectar();
-    try {
-        // Iniciamos la transacción bloqueando el autocommit
-        cn.setAutoCommit(false);
-        
-        // Insertar en la tabla persona
-        ps = cn.prepareStatement(
-            "INSERT INTO persona (nombre, apellido, documento, telefono, correo, activo) VALUES (?, ?, ?, ?, ?, 1)", 
-            Statement.RETURN_GENERATED_KEYS
-        );
-        ps.setString(1, obj.getNombre());
-        ps.setString(2, obj.getApellido());
-        ps.setString(3, obj.getDocumento());
-        ps.setString(4, obj.getTelefono());
-        ps.setString(5, obj.getCorreo());
-        
-        int filasPersona = ps.executeUpdate();
-        
-        // Obtenemos el ID generado automáticamente
-        rs = ps.getGeneratedKeys();
-        if (rs.next()) {
-            obj.setId(rs.getInt(1));
-        }
-        rs.close();
-        ps.close();
+        resp = false;
+        Connection cn = CON.conectar();
+        try {
+            cn.setAutoCommit(false);
+            ps = cn.prepareStatement("INSERT INTO persona (nombre, apellido, documento, telefono, "
+                    + "correo, activo) VALUES (?, ?, ?, ?, ?, 1)", Statement.RETURN_GENERATED_KEYS);
+            ps.setString(1, obj.getNombre());
+            ps.setString(2, obj.getApellido());
+            ps.setString(3, obj.getDocumento());
+            ps.setString(4, obj.getTelefono());
+            ps.setString(5, obj.getCorreo());
+            ps.executeUpdate();
+            rs = ps.getGeneratedKeys();
+            if (rs.next()) {
+                obj.setId(rs.getInt(1));
+            }
+            rs.close();
+            ps.close();
 
-        //Si no se generó un ID, no podemos continuar con el paciente
-        if (obj.getId() == 0 || filasPersona == 0) {
-            throw new SQLException("No se pudo registrar la información personal del paciente.");
-        }
-
-        //Ahora ya podemos insertar en la tabla paciente con el ID que obtuvimos
-        ps = cn.prepareStatement(
-            "INSERT INTO paciente (id, edad, direccion, historial_medico, prepagada_id) VALUES (?, ?, ?, ?, ?)"
-        );
-        ps.setInt(1, obj.getId());
-        ps.setInt(2, obj.getEdad());
-        ps.setString(3, obj.getDireccion());
-        ps.setString(4, obj.getHistorialMedico());
-        
-        //Esta condicion nos ayuda a verificar que el paciente tenga una prepgada o no
-        //Si no tiene prepagada la base de datos deja vacia esa columna y no aparece afilicado a ninguna
-        //Pero si si tiene, entonces tomamos esa ID y lo guardamos en esa columna
-        if (obj.getPrepagadaID() == null) {
-            ps.setNull(5, java.sql.Types.INTEGER);
-        } else {
-            ps.setInt(5, obj.getPrepagadaID());
-        }
-        
-        ps.executeUpdate();
-        
-        // Si todo llegó hasta aquí sin lanzar errores, confirmamos la transacción
-        cn.commit();
-        resp = true; 
-        ps.close();
-        
-    } catch (SQLException e) {
-        // Si algo falla, revertimos todos los cambios hechos en el bloque try
-        if (cn != null) {
+            ps = cn.prepareStatement("INSERT INTO paciente (id, edad, direccion, historial_medico, "
+                    + "prepagada_id) VALUES (?, ?, ?, ?, ?)");
+            ps.setInt(1, obj.getId());
+            ps.setInt(2, obj.getEdad());
+            ps.setString(3, obj.getDireccion());
+            ps.setString(4, obj.getHistorialMedico());
+            if (obj.getPrepagadaID() == null) {
+                ps.setNull(5, java.sql.Types.INTEGER);
+            } else {
+                ps.setInt(5, obj.getPrepagadaID());
+            }
+            resp = ps.executeUpdate() > 0;
+            cn.commit();
+            ps.close();
+        } catch (SQLException e) {
             try {
                 cn.rollback();
             } catch (SQLException ex) {
-                JOptionPane.showMessageDialog(null, "Error en rollback: " + ex.getMessage());
+                JOptionPane.showMessageDialog(null, ex.getMessage());
             }
-        }
-        JOptionPane.showMessageDialog(null, "Error al insertar: " + e.getMessage());
-    } finally {
-        ps = null;
-        rs = null;
-        // Restauramos el estado del autocommit de la conexión y cerramos
-        if (cn != null) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        } finally {
+            ps = null;
+            rs = null;
             try {
                 cn.setAutoCommit(true);
             } catch (SQLException e) {
                 JOptionPane.showMessageDialog(null, e.getMessage());
             }
+            CON.desconectar();
         }
-        CON.desconectar();
+        return resp;
     }
-    return resp;
-}
 
     @Override
 public boolean actualizar(Paciente obj) {
@@ -169,7 +139,8 @@ public boolean actualizar(Paciente obj) {
         
         //  Actualizar los datos en la tabla persona
         ps = cn.prepareStatement(
-            "UPDATE persona SET nombre = ?, apellido = ?, documento = ?, telefono = ?, correo = ? WHERE id = ?"
+            "UPDATE persona SET nombre = ?, apellido = ?, documento = ?, telefono = ?, correo = ? "
+                    + "WHERE id = ?"
         );
         ps.setString(1, obj.getNombre());
         ps.setString(2, obj.getApellido());
@@ -181,9 +152,10 @@ public boolean actualizar(Paciente obj) {
         ps.executeUpdate();
         ps.close();
 
-        // Actualizar los datos específicos en la tabla dependiente (paciente)
+        // Actualizar los datos específicos en la tabla dependiente paciente
         ps = cn.prepareStatement(
-            "UPDATE paciente SET edad = ?, direccion = ?, historial_medico = ?, prepagada_id = ? WHERE id = ?"
+            "UPDATE paciente SET edad = ?, direccion = ?, historial_medico = ?, prepagada_id = ? "
+                    + "WHERE id = ?"
         );
         ps.setInt(1, obj.getEdad());
         ps.setString(2, obj.getDireccion());
