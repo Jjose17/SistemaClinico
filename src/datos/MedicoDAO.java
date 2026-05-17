@@ -109,27 +109,125 @@ public class MedicoDAO implements CrudSimpleInterface<Medico> {
 
     @Override
     public boolean actualizar(Medico obj) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        resp = false;
+        Connection cn = CON.conectar();
+     try {
+        cn.setAutoCommit(false);
+        
+        //Actualizar tabla persona
+        ps = cn.prepareStatement("UPDATE persona SET nombre = ?, apellido = ?, "
+                + "documento = ?, telefono = ?, correo = ? WHERE id = ?");
+        ps.setString(1, obj.getNombre());
+        ps.setString(2, obj.getApellido());
+        ps.setString(3, obj.getDocumento()); 
+        ps.setString(4, obj.getTelefono());  
+        ps.setString(5, obj.getCorreo());    
+        ps.setInt(6, obj.getId());          
+        ps.executeUpdate();
+        ps.close();
+        
+        // Actualizamos la tabla medico especificamente
+        ps = cn.prepareStatement("UPDATE medico SET especialidad = ?, num_licencia = ?, horario = ? "
+                + "WHERE id = ?"); 
+        ps.setString(1, obj.getEspecialidad());
+        ps.setString(2, obj.getNumLicencia());
+        ps.setString(3, obj.getHorario());
+        ps.setInt(4, obj.getId());
+        ps.executeUpdate();
+        cn.commit();
+        resp = true; // Solo es verdadero si el commit se completó
+        ps.close();
+        
+    } catch (SQLException e) {
+        if (cn != null) {
+            try {
+                cn.rollback();
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, "Error en rollback: " + ex.getMessage());
+            }
+        }
+        JOptionPane.showMessageDialog(null, "Error al actualizar médico: " + e.getMessage());
+    } finally {
+        ps = null;
+        if (cn != null) {
+            try {
+                cn.setAutoCommit(true);
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, e.getMessage());
+            }
+        }
+        CON.desconectar();
     }
-
+    return resp;
+}
+ private boolean cambiarEstado(int id, boolean activo) {
+        resp = false;
+        try {
+            ps = CON.conectar().prepareStatement("UPDATE persona SET activo = ? WHERE id = ?");
+            ps.setBoolean(1, activo);
+            ps.setInt(2, id);
+            resp = ps.executeUpdate() > 0;
+            ps.close();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        } finally {
+            ps = null;
+            CON.desconectar();
+        }
+        return resp;
+    }
     @Override
     public boolean desactivar(int id) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return cambiarEstado(id, false);
     }
 
     @Override
     public boolean activar(int id) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return cambiarEstado(id, true);
     }
 
     @Override
     public int total() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        int totalRegistros =0;
+        try{
+            ps=CON.conectar().prepareStatement("SELECT COUNT(id) AS total FROM medico");
+            rs=ps.executeQuery();
+            if(rs.next()){
+            totalRegistros = rs.getInt("total");
+        }
+            ps.close();
+            rs.close();
+        }catch(SQLException e){
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }finally{
+            ps=null;
+            rs=null;
+            CON.desconectar();
+        }
+        return totalRegistros;
     }
 
     @Override
     public boolean existe(String texto) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        resp=false;
+        try{
+            ps=CON.conectar().prepareStatement("SELECT p.id FROM persona "
+                    + "p INNER JOIN medico m ON pd.id=m.id WHERE p.documento = ? OR m.num_licencia = ?");
+            ps.setString(1, texto);
+            ps.setString(2, texto);
+            rs=ps.executeQuery();
+            resp=rs.next();
+            ps.close();
+            rs.close();
+        }catch(SQLException e){
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }finally{
+            ps=null;
+            rs=null;
+            CON.desconectar();
+        }
+        return resp;
+        
     }
     
     
