@@ -11,7 +11,7 @@ public class PrepagadaControl {
     private final PrepagadaDAO DATOS;
     private Prepagada obj;
     private DefaultTableModel modeloTabla;
-    public int registroMostrado; /
+    public int registroMostrado; 
 
     public PrepagadaControl() {
         this.DATOS = new PrepagadaDAO();
