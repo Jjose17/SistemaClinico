@@ -7,6 +7,7 @@ package Presentacion;
 import datos.MedicoDAO;
 import javax.swing.JOptionPane;
 import datos.PacienteDAO;
+import entidades.Persona;
 
 /**
  *
@@ -64,6 +65,11 @@ public class FrmNuevaCita extends javax.swing.JInternalFrame {
         });
 
         comboHoraNuevaCita.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "08:00am", "08:30am", "09:00am", "09:30am", "10:00am", "14:00pm", "14:30pm" }));
+        comboHoraNuevaCita.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboHoraNuevaCitaActionPerformed(evt);
+            }
+        });
 
         txtAreaMotivo.setColumns(20);
         txtAreaMotivo.setRows(5);
@@ -172,18 +178,88 @@ public class FrmNuevaCita extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_txtBuscarNuevaCitaActionPerformed
 
     private void btnGuardarCitaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarCitaActionPerformed
-        if(dcFechaNuevaCita.getDate() == null){
-            JOptionPane.showMessageDialog(this, "Selecciona una fecha para la cita medica", "Cita Medica", JOptionPane.INFORMATION_MESSAGE);
-       return;
+        if (this.idPacienteNuevaCita == 0) {
+        JOptionPane.showMessageDialog(this, "Debe buscar y seleccionar un paciente primero.", "Validación", JOptionPane.WARNING_MESSAGE);
+        return;
+    }
+    
+    //Validar Médico Seleccionado
+    if (comboMedicoNuevaCita.getSelectedIndex() == 0) {
+        JOptionPane.showMessageDialog(this, "Debe seleccionar un médico.", "Validación", JOptionPane.WARNING_MESSAGE);
+        return;
+    }
+    
+    //Validar Fecha del JDateChooser
+    if (dcFechaNuevaCita.getDate() == null) {
+        JOptionPane.showMessageDialog(this, "Debe seleccionar una fecha.", "Validación", JOptionPane.WARNING_MESSAGE);
+        return;
+    }
+
+    try {
+        //CONVERSIÓN DE FECHA 
+        java.util.Date fechaUtil = dcFechaNuevaCita.getDate();
+        java.sql.Date fechaSQL = new java.sql.Date(fechaUtil.getTime());
+
+        // --- CONVERSIÓN DE HORA (String del Combo a java.sql.Time) ---
+        // Tu combo maneja textos tipo "08:30:00" o "08:30am". Asegúrate de que en el modelo esté como "08:30:00"
+        String horaTexto = comboHoraNuevaCita.getSelectedItem().toString().trim();
+
+// Si tu combo arroja "08:30am" o "08:30 pm", primero limpiamos las letras am/pm
+if (horaTexto.toLowerCase().contains("am") || horaTexto.toLowerCase().contains("pm")) {
+    // Esto quita "am" o "pm" y deja solo los números (ej: "08:30")
+    horaTexto = horaTexto.replaceAll("(?i)[a-z\\s]+", ""); 
+}
+
+// 2. Si le faltan los segundos (ej: mide 5 caracteres como "08:30"), se los agregamos
+if (horaTexto.length() == 5) { 
+    horaTexto += ":00"; // Se transforma correctamente en "08:30:00"
+}
+
+// 3. Ahora sí, convertimos de String a java.sql.Time sin que lance error
+java.sql.Time horaSQL = java.sql.Time.valueOf(horaTexto);
+
+// A partir de aquí continúas asignándoselo a tu objeto: obj.setHora(horaSQL);
+
+        //Capturar el ID del Médico objeto
+        Persona med = (Persona) comboMedicoNuevaCita.getSelectedItem();
+        int idMedico = med.getId();
+
+        String motivo = txtAreaMotivo.getText().trim();
+
+        //ARMAR LA ENTIDAD CITA
+        entidades.Cita nuevaCita = new entidades.Cita();
+        nuevaCita.setFecha(fechaSQL);
+        nuevaCita.setHora(horaSQL);
+        nuevaCita.setEstado("Pendiente"); // Arranca por defecto en pendiente
+        nuevaCita.setMotivo(motivo);
+        nuevaCita.setPacienteID(this.idPacienteNuevaCita); // La variable global
+        nuevaCita.setMedicoID(idMedico);
+
+        //ENVIAR AL DAO
+        datos.CitaDAO citaDAO = new datos.CitaDAO();
+        if (citaDAO.insertar(nuevaCita)) {
+            JOptionPane.showMessageDialog(this, "¡Cita registrada con éxito!", "Sistema", JOptionPane.INFORMATION_MESSAGE);
+            
+            // Limpieza básica de la pantalla
+            txtBuscarNuevaCita.setText("");
+            txtAreaMotivo.setText("");
+            txtAreaMotivo.setText("");
+            comboMedicoNuevaCita.setSelectedIndex(0);
+            comboHoraNuevaCita.setSelectedIndex(0);
+            dcFechaNuevaCita.setDate(null);
+            this.idPacienteNuevaCita = 0;
+        } else {
+            JOptionPane.showMessageDialog(this, "La base de datos rechazó el registro de la cita.", "Error", JOptionPane.ERROR_MESSAGE);
         }
-        java.util.Date fechaSeleccionada=dcFechaNuevaCita.getDate();
-        long d=fechaSeleccionada.getTime();
-        java.sql.Date fechaSQL = new java.sql.Date(d);
-        
-        String motivo= txtAreaMotivo.getText();
-        String hora= comboHoraNuevaCita.getSelectedItem().toString();
-        System.out.println("Fecha lista para: " + fechaSQL);
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Error de formato de datos: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+    }
     }//GEN-LAST:event_btnGuardarCitaActionPerformed
+
+    private void comboHoraNuevaCitaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboHoraNuevaCitaActionPerformed
+       
+    }//GEN-LAST:event_comboHoraNuevaCitaActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

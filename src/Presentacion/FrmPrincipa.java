@@ -6,6 +6,7 @@ package Presentacion;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -51,7 +52,6 @@ public class FrmPrincipa extends javax.swing.JFrame {
         mnuCompras = new javax.swing.JMenu();
         jMenuItem4 = new javax.swing.JMenuItem();
         jMenuItem5 = new javax.swing.JMenuItem();
-        jMenuItem6 = new javax.swing.JMenuItem();
         jMenuItem7 = new javax.swing.JMenuItem();
         mnuConsultas = new javax.swing.JMenu();
         jMenuItem8 = new javax.swing.JMenuItem();
@@ -59,7 +59,7 @@ public class FrmPrincipa extends javax.swing.JFrame {
         jMenuItem9 = new javax.swing.JMenuItem();
         jMenuItem10 = new javax.swing.JMenuItem();
         jMenu5 = new javax.swing.JMenu();
-        jMenuItem11 = new javax.swing.JMenuItem();
+        mnuSalir = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Sistema de Citas medicas");
@@ -112,10 +112,12 @@ public class FrmPrincipa extends javax.swing.JFrame {
         });
         mnuCompras.add(jMenuItem5);
 
-        jMenuItem6.setText("Reprogramaciones");
-        mnuCompras.add(jMenuItem6);
-
         jMenuItem7.setText("Cancelaciones");
+        jMenuItem7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem7ActionPerformed(evt);
+            }
+        });
         mnuCompras.add(jMenuItem7);
 
         menuBar.add(mnuCompras);
@@ -142,8 +144,13 @@ public class FrmPrincipa extends javax.swing.JFrame {
         jMenu5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Presentacion/images/salir.png"))); // NOI18N
         jMenu5.setText("Salir");
 
-        jMenuItem11.setText("Cerrar Sesion");
-        jMenu5.add(jMenuItem11);
+        mnuSalir.setText("Salir");
+        mnuSalir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuSalirActionPerformed(evt);
+            }
+        });
+        jMenu5.add(mnuSalir);
 
         menuBar.add(jMenu5);
 
@@ -179,7 +186,9 @@ public class FrmPrincipa extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
-        // TODO add your handling code here:
+        FrmVistaSemanal frm = new FrmVistaSemanal();
+        escritorio.add(frm);
+        frm.setVisible(true);
     }//GEN-LAST:event_jMenuItem5ActionPerformed
 
     private void mnuPacienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuPacienteActionPerformed
@@ -197,6 +206,19 @@ public class FrmPrincipa extends javax.swing.JFrame {
         escritorio.add(frm);
         frm.setVisible(true);
     }//GEN-LAST:event_jMenuItem4ActionPerformed
+
+    private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
+       FrmCancelaciones frm = new FrmCancelaciones();
+       escritorio.add(frm);
+       frm.setVisible(true);
+    }//GEN-LAST:event_jMenuItem7ActionPerformed
+
+    private void mnuSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuSalirActionPerformed
+    int respuesta=JOptionPane.showConfirmDialog(this, "¿Estas segura de salir?", "Confirmar salida", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+    if(respuesta==JOptionPane.YES_OPTION){
+        System.exit(0);
+        }
+    }//GEN-LAST:event_mnuSalirActionPerformed
 
     /**
      * @param args the command line arguments
@@ -238,11 +260,9 @@ public class FrmPrincipa extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu5;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem10;
-    private javax.swing.JMenuItem jMenuItem11;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
-    private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JMenuItem jMenuItem8;
     private javax.swing.JMenuItem jMenuItem9;
@@ -251,6 +271,7 @@ public class FrmPrincipa extends javax.swing.JFrame {
     private javax.swing.JMenu mnuConfiguracion;
     private javax.swing.JMenu mnuConsultas;
     private javax.swing.JMenu mnuPaciente;
+    private javax.swing.JMenuItem mnuSalir;
     // End of variables declaration//GEN-END:variables
 
 }

@@ -12,6 +12,7 @@ import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 public class CitaDAO implements CrudSimpleInterface<Cita>{
     
@@ -100,7 +101,7 @@ public class CitaDAO implements CrudSimpleInterface<Cita>{
     }   
 
 
- private boolean cambiarEstado(int id, String estado) {
+ public boolean cambiarEstado(int id, String estado) {
         resp = false;
         try {
             ps =CON.conectar().prepareStatement("UPDATE cita SET estado = ? WHERE id = ?");
@@ -193,6 +194,95 @@ public class CitaDAO implements CrudSimpleInterface<Cita>{
         return resp;
     }
     
-    
+    // Con este metodo vamos a poder hacer un INNER JOIN para poder ver las citas con el nombre del medico y del paciente gracias al documento
+    public DefaultTableModel buscarCitasPorPaciente(String documento) {
+    DefaultTableModel modelo;
+    String[] titulos = {"ID CITA", "MÉDICO", "FECHA", "HORA", "MOTIVO", "ESTADO"};
+    modelo = new DefaultTableModel(null, titulos) {
+        @Override
+        public boolean isCellEditable(int row, int column) {
+            return false; // Evita que editen directamente sobre las celdas
+        }
+    };
+
+    //Query estructurado que une las citas con la persona que atiende (Médico)
+    String estado = "SELECT c.id, CONCAT(p_med.nombre, ' ', p_med.apellido) AS medico, c.fecha, c.hora, c.motivo, c.estado " +
+                 "FROM cita c " +
+                 "INNER JOIN persona p_pac ON c.paciente_id = p_pac.id " +
+                 "INNER JOIN persona p_med ON c.medico_id = p_med.id " +
+                 "WHERE p_pac.documento = ? " +
+                 "ORDER BY c.fecha DESC, c.hora DESC";
+
+    try {
+        ps = CON.conectar().prepareStatement(estado);
+        ps.setString(1, documento);
+        rs = ps.executeQuery();
+        
+        String[] registro = new String[6];
+        while (rs.next()) {
+            registro[0] = String.valueOf(rs.getInt("id"));
+            registro[1] = rs.getString("medico");
+            registro[2] = String.valueOf(rs.getDate("fecha"));
+            registro[3] = rs.getString("hora");
+            registro[4] = rs.getString("motivo");
+            registro[5] = rs.getString("estado");
+            modelo.addRow(registro);
+        }
+        ps.close(); rs.close();
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(null, "Error al buscar citas: " + e.getMessage());
+    } finally {
+        CON.desconectar();
+    }
+    return modelo;
     
 }
+    //METODO PARA LA VISTA GENERAL DE LAS CITAS, CON ESTA PODREMOS USAR EL JCALENDER
+    //LA IDEA ES QUE ESTE METODO DEVUELVA UN MODELO DE LA TABLA CON LA INFORMACION DE LSA CITAS, E INTENTAR FILTRARLO CON LA FECHA QUE SELECCIONEMOS EN EL CALENDARIO
+    
+    public DefaultTableModel listarTodasLasCitasPorFecha(Date fechaFiltro) {
+    DefaultTableModel modelo;
+    String[] titulos = {"ID CITA", "PACIENTE", "MÉDICO", "FECHA", "HORA", "MOTIVO", "ESTADO"};
+    modelo = new DefaultTableModel(null, titulos) {
+        @Override
+        public boolean isCellEditable(int row, int column) {
+            return false;
+        }
+    };
+
+    // Query que une la cita con el paciente y el médico al mismo tiempo
+    String sql = "SELECT c.id, CONCAT(p_pac.nombre, ' ', p_pac.apellido) AS paciente, " +
+                 "CONCAT(p_med.nombre, ' ', p_med.apellido) AS medico, c.fecha, c.hora, c.motivo, c.estado " +
+                 "FROM cita c " +
+                 "INNER JOIN persona p_pac ON c.paciente_id = p_pac.id " +
+                 "INNER JOIN persona p_med ON c.medico_id = p_med.id " +
+                 "WHERE c.fecha = ? " +
+                 "ORDER BY c.hora ASC";
+
+    try {
+        ps = CON.conectar().prepareStatement(sql);
+        ps.setDate(1, fechaFiltro);
+        rs = ps.executeQuery();
+        
+        String[] registro = new String[7];
+        while (rs.next()) {
+            registro[0] = String.valueOf(rs.getInt("id"));
+            registro[1] = rs.getString("paciente");
+            registro[2] = rs.getString("medico");
+            registro[3] = String.valueOf(rs.getDate("fecha"));
+            registro[4] = rs.getString("hora");
+            registro[5] = rs.getString("motivo");
+            registro[6] = rs.getString("estado");
+            modelo.addRow(registro);
+        }
+        ps.close(); rs.close();
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(null, "Error en vista global: " + e.getMessage());
+    } finally {
+        CON.desconectar();
+    }
+    return modelo;
+}
+    
+    
+    }

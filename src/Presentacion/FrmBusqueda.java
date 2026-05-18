@@ -5,6 +5,7 @@
 package Presentacion;
 
 import Negocio.PacienteControl;
+import Presentacion.FrmExpediente;
 import javax.swing.JOptionPane;
 import javax.swing.table.TableRowSorter;
 
@@ -72,7 +73,7 @@ public class FrmBusqueda extends javax.swing.JInternalFrame {
         btnDesactivarExpediente = new javax.swing.JButton();
         tablaListadoExpediente = new javax.swing.JScrollPane();
         tablaPacientes = new javax.swing.JTable();
-        btnVerExpedienteBusqueda = new javax.swing.JButton();
+        btnVerExpediente = new javax.swing.JButton();
 
         setClosable(true);
         setIconifiable(true);
@@ -123,10 +124,10 @@ public class FrmBusqueda extends javax.swing.JInternalFrame {
         ));
         tablaListadoExpediente.setViewportView(tablaPacientes);
 
-        btnVerExpedienteBusqueda.setText("Ver Expediente");
-        btnVerExpedienteBusqueda.addActionListener(new java.awt.event.ActionListener() {
+        btnVerExpediente.setText("Ver Expediente");
+        btnVerExpediente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnVerExpedienteBusquedaActionPerformed(evt);
+                btnVerExpedienteActionPerformed(evt);
             }
         });
 
@@ -136,24 +137,27 @@ public class FrmBusqueda extends javax.swing.JInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(52, 52, 52)
-                .addComponent(jLabelPacientesRegistrados, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 196, Short.MAX_VALUE)
+                .addComponent(jLabelPacientesRegistrados, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(txtBuscarExpediente, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(138, 138, 138)
-                .addComponent(btnBuscarExpediente)
-                .addGap(244, 244, 244))
+                .addGap(351, 351, 351))
             .addGroup(layout.createSequentialGroup()
                 .addGap(67, 67, 67)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnVerExpedienteBusqueda)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(tablaListadoExpediente, javax.swing.GroupLayout.PREFERRED_SIZE, 668, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(50, 50, 50)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnActivarExpediente, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnDesactivarExpediente)
-                            .addComponent(btnModificarExpediente))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(btnVerExpediente)
+                        .addGap(28, 28, 28)
+                        .addComponent(btnModificarExpediente)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnActivarExpediente, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(28, 28, 28)
+                        .addComponent(btnDesactivarExpediente)
+                        .addGap(202, 202, 202))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(btnBuscarExpediente)
+                            .addComponent(tablaListadoExpediente, javax.swing.GroupLayout.PREFERRED_SIZE, 849, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(189, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -164,16 +168,13 @@ public class FrmBusqueda extends javax.swing.JInternalFrame {
                     .addComponent(btnBuscarExpediente)
                     .addComponent(jLabelPacientesRegistrados, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(66, 66, 66)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnModificarExpediente)
-                        .addGap(40, 40, 40)
-                        .addComponent(btnActivarExpediente)
-                        .addGap(32, 32, 32)
-                        .addComponent(btnDesactivarExpediente))
-                    .addComponent(tablaListadoExpediente, javax.swing.GroupLayout.PREFERRED_SIZE, 514, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(tablaListadoExpediente, javax.swing.GroupLayout.PREFERRED_SIZE, 514, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(54, 54, 54)
-                .addComponent(btnVerExpedienteBusqueda)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnVerExpediente)
+                    .addComponent(btnModificarExpediente)
+                    .addComponent(btnActivarExpediente)
+                    .addComponent(btnDesactivarExpediente))
                 .addContainerGap(142, Short.MAX_VALUE))
         );
 
@@ -181,11 +182,12 @@ public class FrmBusqueda extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnModificarExpedienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarExpedienteActionPerformed
-        if (tablaPacientes.getSelectedRowCount() == 1) {
+       // 1. Validar selección de la tabla
+    if (tablaPacientes.getSelectedRowCount() == 1) {
         int fila = tablaPacientes.getSelectedRow();
 
-        // 1. Extraer los datos (Verifica que los números 0, 1, 2 coincidan con tu JTable)
-        int id = Integer.parseInt(tablaPacientes.getValueAt(fila, 0).toString()); 
+        // 2. Extraer todos los datos de la fila (Asegúrate de que los índices 0, 1, 2... coincidan con tus columnas)
+        int id = Integer.parseInt(tablaPacientes.getValueAt(fila, 0).toString());
         String nombre = tablaPacientes.getValueAt(fila, 1).toString();
         String apellido = tablaPacientes.getValueAt(fila, 2).toString();
         String documento = tablaPacientes.getValueAt(fila, 3).toString();
@@ -194,23 +196,23 @@ public class FrmBusqueda extends javax.swing.JInternalFrame {
         String edad = tablaPacientes.getValueAt(fila, 6).toString();
         String direccion = tablaPacientes.getValueAt(fila, 7).toString();
         String historial = tablaPacientes.getValueAt(fila, 8).toString();
-        String prepagada = tablaPacientes.getValueAt(fila, 9).toString();
 
-        if (this.frmRegistroPacientes != null) {
-            // 2. Enviar los datos al formulario de registro
-            this.frmRegistroPacientes.cargarDatosModificar(id, nombre, apellido, documento, telefono, correo, edad, direccion, historial, prepagada);
-            
-            // 3. ¡ESTA LÍNEA ES VITAL! Hace que la ventana de registro aparezca en pantalla
-            this.frmRegistroPacientes.setVisible(true); 
-            this.frmRegistroPacientes.toFront();
-            
-            // 4. Opcional: Ocultar o cerrar la búsqueda para que no estorbe
-            this.dispose(); 
-        } else {
-            JOptionPane.showMessageDialog(this, "Error: No se encontró la instancia del formulario de registro.");
-        }
+        // 3. Instanciar el NUEVO formulario de modificación
+        FrmModificarPaciente frmMod = new FrmModificarPaciente();
+        
+        // 4. Inyectarle los datos extraídos de la tabla
+        frmMod.cargarDatos(id, nombre, apellido, documento, telefono, correo, edad, direccion, historial);
+        
+        // 5. Agregarlo al DesktopPane del MDI principal y mostrarlo en pantalla
+        this.getDesktopPane().add(frmMod);
+        frmMod.setVisible(true);
+        frmMod.toFront();
+        
+        // 6. Opcional: Cerrar esta ventana de búsqueda para despejar espacio
+        this.dispose();
+        
     } else {
-        JOptionPane.showMessageDialog(this, "Seleccione un paciente para modificar.");
+        JOptionPane.showMessageDialog(this, "Debe seleccionar un único paciente de la tabla para modificar.", "Sistema", JOptionPane.WARNING_MESSAGE);
     }
     
      
@@ -260,8 +262,9 @@ public class FrmBusqueda extends javax.swing.JInternalFrame {
     
     }//GEN-LAST:event_btnDesactivarExpedienteActionPerformed
 
-    private void btnVerExpedienteBusquedaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerExpedienteBusquedaActionPerformed
-        if(tablaPacientes.getSelectedRow() ==1){
+    private void btnVerExpedienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerExpedienteActionPerformed
+                                               
+     if(tablaPacientes.getSelectedRow() ==1){
             JOptionPane.showMessageDialog(this, "Debe seleccionar un paciente de la tabla", "Informe", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
@@ -272,7 +275,8 @@ public class FrmBusqueda extends javax.swing.JInternalFrame {
         this.getDesktopPane().add(frm);
         frm.setVisible(true);
         frm.toFront();
-    }//GEN-LAST:event_btnVerExpedienteBusquedaActionPerformed
+
+    }//GEN-LAST:event_btnVerExpedienteActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -280,10 +284,11 @@ public class FrmBusqueda extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnBuscarExpediente;
     private javax.swing.JButton btnDesactivarExpediente;
     private javax.swing.JButton btnModificarExpediente;
-    private javax.swing.JButton btnVerExpedienteBusqueda;
+    private javax.swing.JButton btnVerExpediente;
     private javax.swing.JLabel jLabelPacientesRegistrados;
     private javax.swing.JScrollPane tablaListadoExpediente;
     private javax.swing.JTable tablaPacientes;
     private javax.swing.JTextField txtBuscarExpediente;
     // End of variables declaration//GEN-END:variables
 }
+
