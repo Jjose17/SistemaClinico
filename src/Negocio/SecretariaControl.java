@@ -1,4 +1,4 @@
-package negocio; // Unificado a minúsculas como en CategoriaControl
+package Negocio; 
 
 import datos.SecretariaDAO;
 import entidades.Secretaria;
@@ -11,7 +11,7 @@ public class SecretariaControl {
     private final SecretariaDAO DATOS;
     private Secretaria obj;
     private DefaultTableModel modeloTabla;
-    public int registroMostrado; // Cambiado de registrosMostrados a registroMostrado
+    public int registroMostrado; 
 
     public SecretariaControl() {
         this.DATOS = new SecretariaDAO();

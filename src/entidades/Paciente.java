@@ -12,8 +12,20 @@ public class Paciente extends Persona{
     
     
     
-    public Paciente(int aInt, String string, String string1, String string2, String string3, String string4, boolean aBoolean, int aInt1, String string5, String string6, Integer par){
-        
+    public Paciente(int id, String nombre, String apellido, String documento, String telefono, 
+                String correo, boolean activo, int edad, String direccion, 
+                String historialMedico, Integer prepagadaID) {
+    
+    
+    super(id, nombre, apellido, documento, telefono, correo, activo);
+    
+   
+    this.edad = edad;
+    this.direccion = direccion;
+    this.historialMedico = historialMedico;
+    this.prepagadaID = prepagadaID;
+    
+    
     }
 
     public int getEdad() {

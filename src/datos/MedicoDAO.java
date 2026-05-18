@@ -4,6 +4,7 @@ package datos;
 import database.Conexion;
 import datos.interfaces.CrudSimpleInterface;
 import entidades.Medico;
+import entidades.Persona;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,6 +12,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 
 public class MedicoDAO implements CrudSimpleInterface<Medico> {
@@ -228,6 +230,38 @@ public class MedicoDAO implements CrudSimpleInterface<Medico> {
         }
         return resp;
         
+    }
+    
+    // METODO PARA PODER SELECCIONAR A MEDICOS EN LA PARTE DE NUEVA CITA, NECESITAMOS LLAMAR A LOS MEDICOS QUE TENGAMOS
+    
+    public DefaultComboBoxModel seleccionaMedicos(){
+        DefaultComboBoxModel combo = new DefaultComboBoxModel();
+        combo.addElement("Selecciona un medico ");
+        String med= "SELECT p.id, p.nombre, p.apellido " 
+           + "FROM persona p " 
+           + "INNER JOIN medico m ON p.id = m.id " 
+           + "WHERE p.activo = b'1'";
+        
+        try{
+            ps=CON.conectar().prepareStatement(med);
+            rs=ps.executeQuery();
+            while(rs.next()){
+                Persona p= new Persona();
+                p.setId(rs.getInt("id"));
+                p.setNombre(rs.getString("nombre"));
+                p.setApellido(rs.getString("apellido"));
+                combo.addElement(p);
+            }
+            ps.close();
+            rs.close();
+        }catch(SQLException e){
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }finally{
+         ps=null;
+        rs=null;
+        CON.desconectar();
+        }
+        return combo;
     }
     
     

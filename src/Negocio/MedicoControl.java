@@ -1,4 +1,4 @@
-package negocio; 
+package Negocio; 
 
 import datos.MedicoDAO;
 import entidades.Medico;

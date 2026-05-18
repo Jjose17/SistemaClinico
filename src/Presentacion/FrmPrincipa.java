@@ -47,7 +47,6 @@ public class FrmPrincipa extends javax.swing.JFrame {
         menuBar = new javax.swing.JMenuBar();
         mnuPaciente = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
-        jMenuItem2 = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
         mnuCompras = new javax.swing.JMenu();
         jMenuItem4 = new javax.swing.JMenuItem();
@@ -82,15 +81,6 @@ public class FrmPrincipa extends javax.swing.JFrame {
         });
         mnuPaciente.add(jMenuItem1);
 
-        jMenuItem2.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.ALT_DOWN_MASK));
-        jMenuItem2.setText("Expediente");
-        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem2ActionPerformed(evt);
-            }
-        });
-        mnuPaciente.add(jMenuItem2);
-
         jMenuItem3.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_B, java.awt.event.InputEvent.ALT_DOWN_MASK));
         jMenuItem3.setText("Busqueda");
         jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
@@ -107,6 +97,11 @@ public class FrmPrincipa extends javax.swing.JFrame {
 
         jMenuItem4.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.ALT_DOWN_MASK));
         jMenuItem4.setText("Nueva Cita");
+        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem4ActionPerformed(evt);
+            }
+        });
         mnuCompras.add(jMenuItem4);
 
         jMenuItem5.setText("Vista diaria/semanal");
@@ -169,7 +164,18 @@ public class FrmPrincipa extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
-        // TODO add your handling code here:
+        FrmPacientes frmReg = new FrmPacientes();
+    FrmBusqueda frmBus = new FrmBusqueda();
+
+    // 2. ¡ESTA ES LA LÍNEA CLAVE QUE TE FALTA! 
+    // Le pasamos la ventana de registro a la de búsqueda para que se conozcan
+    frmBus.setFrmRegistroPacientes(frmReg); 
+
+    // 3. Las agregas a tu contenedor (JDesktopPane) y las muestras
+    escritorio.add(frmReg);
+    escritorio.add(frmBus);
+    
+    frmBus.setVisible(true);
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
@@ -186,11 +192,11 @@ public class FrmPrincipa extends javax.swing.JFrame {
         frm.setVisible(true);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
-    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-        FrmExpediente frm = new FrmExpediente();
+    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+        FrmNuevaCita frm = new FrmNuevaCita();
         escritorio.add(frm);
         frm.setVisible(true);
-    }//GEN-LAST:event_jMenuItem2ActionPerformed
+    }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -233,7 +239,6 @@ public class FrmPrincipa extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem10;
     private javax.swing.JMenuItem jMenuItem11;
-    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;

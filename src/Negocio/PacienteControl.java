@@ -1,4 +1,4 @@
-package negocio; 
+package Negocio; 
 
 import datos.PacienteDAO;
 import entidades.Paciente;
@@ -151,5 +151,9 @@ public class PacienteControl {
 
     public int totalMostrado() {
         return this.registroMostrado;
+    }
+
+    public Paciente obtenerPacientePorId(int idPaciente) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }
