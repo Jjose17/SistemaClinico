@@ -10,6 +10,7 @@ public class Persona {
     private String telefono;
     private String correo;
     private boolean activo;
+    private Rol rol;
     
     public Persona(){
         
@@ -79,6 +80,14 @@ public class Persona {
 
     public void setActivo(boolean activo) {
         this.activo = activo;
+    }
+    
+    public Rol getRol(){
+    return rol;
+    }
+
+    public void setRol(Rol rol){
+    this.rol = rol;
     }
 
     @Override

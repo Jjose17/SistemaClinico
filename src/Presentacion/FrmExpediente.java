@@ -53,22 +53,34 @@ public class FrmExpediente extends javax.swing.JInternalFrame {
         setResizable(true);
         setTitle("Expediente");
 
+        lblNombreExpediente.setForeground(new java.awt.Color(0, 0, 0));
         lblNombreExpediente.setText("Paciente");
+        lblNombreExpediente.setOpaque(true);
 
+        lblDocumentoExpediente.setForeground(new java.awt.Color(0, 0, 0));
         lblDocumentoExpediente.setText("Documento");
+        lblDocumentoExpediente.setOpaque(true);
 
+        lblEdadExpediente.setForeground(new java.awt.Color(0, 0, 0));
         lblEdadExpediente.setText("Edad");
+        lblEdadExpediente.setOpaque(true);
 
+        lblEntidadExpediente.setForeground(new java.awt.Color(0, 0, 0));
         lblEntidadExpediente.setText("Entidad");
+        lblEntidadExpediente.setOpaque(true);
 
-        lblHistorialExpediente.setText("Historial Clinico");
+        lblHistorialExpediente.setForeground(new java.awt.Color(0, 0, 0));
+        lblHistorialExpediente.setText("Historial Clinico:");
+        lblHistorialExpediente.setOpaque(true);
 
         txtAreaHistorialExpediente.setEditable(false);
         txtAreaHistorialExpediente.setColumns(20);
         txtAreaHistorialExpediente.setRows(5);
         ScrollHistorialAntecedentes.setViewportView(txtAreaHistorialExpediente);
 
-        jLabel1.setText("Historial Citas medicas");
+        jLabel1.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel1.setText("Historial Citas medicas:");
+        jLabel1.setOpaque(true);
 
         tablaCitas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -88,46 +100,44 @@ public class FrmExpediente extends javax.swing.JInternalFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(35, 35, 35)
                         .addComponent(lblHistorialExpediente)
                         .addGap(47, 47, 47)
-                        .addComponent(ScrollHistorialAntecedentes, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(ScrollHistorialAntecedentes, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(58, 58, 58)
+                        .addComponent(jLabel1))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(131, 131, 131)
-                        .addComponent(lblNombreExpediente)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(lblDocumentoExpediente)))
-                .addGap(58, 58, 58)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel1)
-                    .addComponent(lblEdadExpediente))
+                        .addGap(93, 93, 93)
+                        .addComponent(lblNombreExpediente, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(lblDocumentoExpediente, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(lblEdadExpediente, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(ScrollHistorialCitas, javax.swing.GroupLayout.PREFERRED_SIZE, 306, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(52, 52, 52)
-                        .addComponent(ScrollHistorialCitas, javax.swing.GroupLayout.PREFERRED_SIZE, 306, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(105, 105, 105)
-                        .addComponent(lblEntidadExpediente)))
-                .addContainerGap(29, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addComponent(lblEntidadExpediente, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(28, 28, 28)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblNombreExpediente)
-                    .addComponent(lblDocumentoExpediente)
-                    .addComponent(lblEdadExpediente)
-                    .addComponent(lblEntidadExpediente))
+                    .addComponent(lblNombreExpediente, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblDocumentoExpediente, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblEdadExpediente, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblEntidadExpediente, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(69, 69, 69)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(lblHistorialExpediente)
                     .addComponent(jLabel1)
                     .addComponent(ScrollHistorialCitas, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addComponent(ScrollHistorialAntecedentes, javax.swing.GroupLayout.DEFAULT_SIZE, 193, Short.MAX_VALUE))
-                .addContainerGap(244, Short.MAX_VALUE))
+                .addContainerGap(235, Short.MAX_VALUE))
         );
 
         pack();

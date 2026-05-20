@@ -69,6 +69,7 @@ public class FrmBusqueda extends javax.swing.JInternalFrame {
         setResizable(true);
         setTitle("Busqueda de Pacientes");
 
+        btnBuscarExpediente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Presentacion/images/icons8-search-24.png"))); // NOI18N
         btnBuscarExpediente.setText("Buscar:");
         btnBuscarExpediente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -78,6 +79,7 @@ public class FrmBusqueda extends javax.swing.JInternalFrame {
 
         jLabelPacientesRegistrados.setText("Pacientes registrados:");
 
+        btnModificarExpediente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Presentacion/images/icons8-edit-file-24.png"))); // NOI18N
         btnModificarExpediente.setText("Modificar");
         btnModificarExpediente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -85,6 +87,7 @@ public class FrmBusqueda extends javax.swing.JInternalFrame {
             }
         });
 
+        btnActivarExpediente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Presentacion/images/icons8-check-mark-24.png"))); // NOI18N
         btnActivarExpediente.setText("Activar");
         btnActivarExpediente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -92,6 +95,7 @@ public class FrmBusqueda extends javax.swing.JInternalFrame {
             }
         });
 
+        btnDesactivarExpediente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Presentacion/images/icons8-remove-user-24.png"))); // NOI18N
         btnDesactivarExpediente.setText("Desactivar");
         btnDesactivarExpediente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -112,6 +116,7 @@ public class FrmBusqueda extends javax.swing.JInternalFrame {
         ));
         tablaListadoExpediente.setViewportView(tablaPacientes);
 
+        btnVerExpediente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Presentacion/images/icons8-file-24.png"))); // NOI18N
         btnVerExpediente.setText("Ver Expediente");
         btnVerExpediente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -123,30 +128,26 @@ public class FrmBusqueda extends javax.swing.JInternalFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(52, 52, 52)
-                .addComponent(jLabelPacientesRegistrados, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(351, 824, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
-                .addGap(67, 67, 67)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
+                .addContainerGap(50, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addComponent(btnVerExpediente)
-                        .addGap(28, 28, 28)
+                        .addGap(45, 45, 45)
                         .addComponent(btnModificarExpediente)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnActivarExpediente, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(28, 28, 28)
-                        .addComponent(btnDesactivarExpediente)
-                        .addGap(202, 202, 202))
+                        .addComponent(btnActivarExpediente)
+                        .addGap(48, 48, 48)
+                        .addComponent(btnDesactivarExpediente))
+                    .addComponent(tablaListadoExpediente, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 1005, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(txtBuscarExpediente, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(205, 205, 205)
-                                .addComponent(btnBuscarExpediente))
-                            .addComponent(tablaListadoExpediente, javax.swing.GroupLayout.PREFERRED_SIZE, 849, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap(189, Short.MAX_VALUE))))
+                        .addGap(2, 2, 2)
+                        .addComponent(jLabelPacientesRegistrados, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtBuscarExpediente, javax.swing.GroupLayout.PREFERRED_SIZE, 553, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnBuscarExpediente)))
+                .addContainerGap(50, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -164,7 +165,7 @@ public class FrmBusqueda extends javax.swing.JInternalFrame {
                     .addComponent(btnModificarExpediente)
                     .addComponent(btnActivarExpediente)
                     .addComponent(btnDesactivarExpediente))
-                .addContainerGap(142, Short.MAX_VALUE))
+                .addContainerGap(126, Short.MAX_VALUE))
         );
 
         pack();

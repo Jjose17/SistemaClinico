@@ -18,6 +18,7 @@ public class FrmCancelaciones extends javax.swing.JInternalFrame {
         tablaCitaEstado = new javax.swing.JTable();
         comboEstadoCita = new javax.swing.JComboBox<>();
         btnActualizarEstado = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
 
         setClosable(true);
         setIconifiable(true);
@@ -25,6 +26,7 @@ public class FrmCancelaciones extends javax.swing.JInternalFrame {
         setResizable(true);
         setTitle("Cancelaciones");
 
+        btnBuscarCancelaciones.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Presentacion/images/icons8-search-24.png"))); // NOI18N
         btnBuscarCancelaciones.setText("Buscar");
         btnBuscarCancelaciones.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -46,13 +48,19 @@ public class FrmCancelaciones extends javax.swing.JInternalFrame {
         ));
         jScrollPane1.setViewportView(tablaCitaEstado);
 
-        comboEstadoCita.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pendiente", "Asistida", "Completada", " " }));
+        comboEstadoCita.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pendiente", "Asistida", "Completada", "Cancelada" }));
         comboEstadoCita.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 comboEstadoCitaMouseClicked(evt);
             }
         });
+        comboEstadoCita.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboEstadoCitaActionPerformed(evt);
+            }
+        });
 
+        btnActualizarEstado.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Presentacion/images/icons8-refresh-24.png"))); // NOI18N
         btnActualizarEstado.setText("Actualizar");
         btnActualizarEstado.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -60,41 +68,45 @@ public class FrmCancelaciones extends javax.swing.JInternalFrame {
             }
         });
 
+        jLabel1.setText("Documento:");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(74, 74, 74)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 541, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(82, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(txtBuscarCancelaciones, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(66, 66, 66)
-                .addComponent(btnBuscarCancelaciones)
-                .addGap(170, 170, 170))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(115, 115, 115)
                 .addComponent(btnActualizarEstado)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(comboEstadoCita, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(159, 159, 159))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(74, 74, 74)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtBuscarCancelaciones, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnBuscarCancelaciones))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 541, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(82, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(23, 23, 23)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtBuscarCancelaciones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnBuscarCancelaciones))
+                    .addComponent(txtBuscarCancelaciones, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnBuscarCancelaciones)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(37, 37, 37)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 372, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(40, 40, 40)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(comboEstadoCita, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(comboEstadoCita, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnActualizarEstado))
-                .addContainerGap(54, Short.MAX_VALUE))
+                .addContainerGap(38, Short.MAX_VALUE))
         );
 
         pack();
@@ -141,11 +153,16 @@ public class FrmCancelaciones extends javax.swing.JInternalFrame {
     }
     }//GEN-LAST:event_btnActualizarEstadoActionPerformed
 
+    private void comboEstadoCitaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboEstadoCitaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_comboEstadoCitaActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnActualizarEstado;
     private javax.swing.JButton btnBuscarCancelaciones;
     private javax.swing.JComboBox<String> comboEstadoCita;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tablaCitaEstado;
     private javax.swing.JTextField txtBuscarCancelaciones;

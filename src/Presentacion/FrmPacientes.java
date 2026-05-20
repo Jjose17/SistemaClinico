@@ -72,6 +72,7 @@ public class FrmPacientes extends javax.swing.JInternalFrame {
 
         RegistroCorreo.setText("Correo");
 
+        btnGuardarRegis.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Presentacion/images/icons8-save-24.png"))); // NOI18N
         btnGuardarRegis.setText("Guardar");
         btnGuardarRegis.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -79,6 +80,7 @@ public class FrmPacientes extends javax.swing.JInternalFrame {
             }
         });
 
+        btnCancelarRegis.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Presentacion/images/icons8-cancel-24.png"))); // NOI18N
         btnCancelarRegis.setText("Cancelar");
         btnCancelarRegis.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

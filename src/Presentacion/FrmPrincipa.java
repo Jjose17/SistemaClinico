@@ -35,6 +35,8 @@ public class FrmPrincipa extends javax.swing.JFrame {
             }
 
         };
+        jPanel1 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
         menuBar = new javax.swing.JMenuBar();
         mnuPaciente = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -43,16 +45,26 @@ public class FrmPrincipa extends javax.swing.JFrame {
         jMenuItem4 = new javax.swing.JMenuItem();
         jMenuItem5 = new javax.swing.JMenuItem();
         jMenuItem7 = new javax.swing.JMenuItem();
-        mnuConsultas = new javax.swing.JMenu();
-        jMenuItem8 = new javax.swing.JMenuItem();
         mnuConfiguracion = new javax.swing.JMenu();
         jMenuItem9 = new javax.swing.JMenuItem();
-        jMenuItem10 = new javax.swing.JMenuItem();
         jMenu5 = new javax.swing.JMenu();
         mnuSalir = new javax.swing.JMenuItem();
+        mnuConsultas = new javax.swing.JMenu();
+        jMenuItem8 = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
+        jMenuItem6 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Sistema de Citas medicas");
+
+        jPanel1.setBackground(new java.awt.Color(16, 109, 133));
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Presentacion/images/logo1.png"))); // NOI18N
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(-220, -190, -1, -1));
+
+        escritorio.add(jPanel1);
+        jPanel1.setBounds(610, 80, 780, 510);
 
         mnuPaciente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Presentacion/images/icons8-user-48.png"))); // NOI18N
         mnuPaciente.setText("Paciente");
@@ -63,6 +75,7 @@ public class FrmPrincipa extends javax.swing.JFrame {
         });
 
         jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.ALT_DOWN_MASK));
+        jMenuItem1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Presentacion/images/icons8-register-24.png"))); // NOI18N
         jMenuItem1.setText("Registro");
         jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -72,6 +85,7 @@ public class FrmPrincipa extends javax.swing.JFrame {
         mnuPaciente.add(jMenuItem1);
 
         jMenuItem3.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_B, java.awt.event.InputEvent.ALT_DOWN_MASK));
+        jMenuItem3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Presentacion/images/icons8-search-24.png"))); // NOI18N
         jMenuItem3.setText("Busqueda");
         jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -86,6 +100,7 @@ public class FrmPrincipa extends javax.swing.JFrame {
         mnuCompras.setText("Citas");
 
         jMenuItem4.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.ALT_DOWN_MASK));
+        jMenuItem4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Presentacion/images/icons8-plus-24.png"))); // NOI18N
         jMenuItem4.setText("Nueva Cita");
         jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -94,6 +109,7 @@ public class FrmPrincipa extends javax.swing.JFrame {
         });
         mnuCompras.add(jMenuItem4);
 
+        jMenuItem5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Presentacion/images/icons8-view-24.png"))); // NOI18N
         jMenuItem5.setText("Vista diaria/semanal");
         jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -102,6 +118,7 @@ public class FrmPrincipa extends javax.swing.JFrame {
         });
         mnuCompras.add(jMenuItem5);
 
+        jMenuItem7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Presentacion/images/icons8-important-event-24.png"))); // NOI18N
         jMenuItem7.setText("Cancelaciones");
         jMenuItem7.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -112,22 +129,17 @@ public class FrmPrincipa extends javax.swing.JFrame {
 
         menuBar.add(mnuCompras);
 
-        mnuConsultas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Presentacion/images/icons8-consultation-48.png"))); // NOI18N
-        mnuConsultas.setText("Consultas");
-
-        jMenuItem8.setText("Nueva Consulta");
-        mnuConsultas.add(jMenuItem8);
-
-        menuBar.add(mnuConsultas);
-
         mnuConfiguracion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Presentacion/images/icons8-config-48.png"))); // NOI18N
         mnuConfiguracion.setText("Configuracion");
 
+        jMenuItem9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Presentacion/images/icons8-client-management-24.png"))); // NOI18N
         jMenuItem9.setText("Usuarios");
+        jMenuItem9.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem9ActionPerformed(evt);
+            }
+        });
         mnuConfiguracion.add(jMenuItem9);
-
-        jMenuItem10.setText("jMenuItem10");
-        mnuConfiguracion.add(jMenuItem10);
 
         menuBar.add(mnuConfiguracion);
 
@@ -143,6 +155,20 @@ public class FrmPrincipa extends javax.swing.JFrame {
         jMenu5.add(mnuSalir);
 
         menuBar.add(jMenu5);
+
+        mnuConsultas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Presentacion/images/icons8-consultation-48.png"))); // NOI18N
+        mnuConsultas.setText("Futuro");
+
+        jMenuItem8.setText("Facturacion");
+        mnuConsultas.add(jMenuItem8);
+
+        jMenuItem2.setText("Reportes");
+        mnuConsultas.add(jMenuItem2);
+
+        jMenuItem6.setText("Mantenimiento");
+        mnuConsultas.add(jMenuItem6);
+
+        menuBar.add(mnuConsultas);
 
         setJMenuBar(menuBar);
 
@@ -161,7 +187,7 @@ public class FrmPrincipa extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
-        FrmPacientes frmReg = new FrmPacientes();
+    FrmPacientes frmReg = new FrmPacientes();
     FrmBusqueda frmBus = new FrmBusqueda();
     frmBus.setFrmRegistroPacientes(frmReg); 
     escritorio.add(frmReg);
@@ -205,6 +231,12 @@ public class FrmPrincipa extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_mnuSalirActionPerformed
 
+    private void jMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem9ActionPerformed
+        FrmUsuarios frm = new FrmUsuarios();
+        escritorio.add(frm);
+        frm.setVisible(true);
+    }//GEN-LAST:event_jMenuItem9ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -218,15 +250,18 @@ public class FrmPrincipa extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDesktopPane escritorio;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JMenu jMenu5;
     private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem10;
+    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
+    private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JMenuItem jMenuItem8;
     private javax.swing.JMenuItem jMenuItem9;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JMenu mnuCompras;
     private javax.swing.JMenu mnuConfiguracion;
