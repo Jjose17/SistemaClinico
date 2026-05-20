@@ -4,10 +4,8 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/Users/chiqu/Documents/NetBeansProjects/SistemaClinico/SistemaClinico/src/Presentacion/FrmPrincipa.java</file>
-            <file>file:/C:/Users/chiqu/Documents/NetBeansProjects/SistemaClinico/SistemaClinico/src/Presentacion/FrmPacientes.java</file>
-            <file>file:/C:/Users/chiqu/Documents/NetBeansProjects/SistemaClinico/SistemaClinico/src/Presentacion/FrmExpediente.java</file>
-            <file>file:/C:/Users/chiqu/Documents/NetBeansProjects/SistemaClinico/SistemaClinico/src/Presentacion/FrmBusqueda.java</file>
-            <file>file:/C:/Users/chiqu/Documents/NetBeansProjects/SistemaClinico/SistemaClinico/src/Presentacion/FrmNuevaCita.java</file>
+            <file>file:/C:/Users/chiqu/Documents/NetBeansProjects/SistemaClinico/SistemaClinico/src/datos/UsuarioDAO.java</file>
+            <file>file:/C:/Users/chiqu/Documents/NetBeansProjects/SistemaClinico/SistemaClinico/src/Presentacion/FrmLogin.java</file>
         </group>
     </open-files>
 </project-private>

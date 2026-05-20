@@ -285,7 +285,7 @@ public boolean actualizar(Paciente obj) {
     
     //METODO AÑADIDO PARA LA PARTE DE HISTORIALMEDICO E HISTORIAL CITAS
     
-    // === MÉTODO 1: PARA EL EXPEDIENTE (BUSCA POR ID ENERO) ===
+    
 public Paciente obtenerPacientePorId(int id) {
     Paciente obj = null;
     String sql = "SELECT p.id, p.nombre, p.apellido, p.documento, pa.edad, pa.historial_medico " +
@@ -313,28 +313,20 @@ public Paciente obtenerPacientePorId(int id) {
     }
     return obj;
 }
-    
-    
-    
-    
-    
-    // 1. Cambiamos el parámetro para que reciba un String llamado documento
+   
 public Paciente obtenerPacientePorDocumento(String documento) { 
 
     Paciente obj = null;
     
-    // 2. Corregimos la estructura del String SQL (dejando los espacios al final de cada línea)
+    
     String pac = "SELECT p.id, p.nombre, p.apellido, p.documento, pa.edad, pa.historial_medico "
                + "FROM persona p "
                + "INNER JOIN paciente pa ON p.id = pa.id "
-               + "WHERE p.documento = ?"; // <-- Cambiado de p.id a p.documento
+               + "WHERE p.documento = ?"; 
 
     try {
         ps = CON.conectar().prepareStatement(pac);
-        
-        // 3. Ahora sí existe la variable 'documento' tipo String para el parámetro
         ps.setString(1, documento); 
-        
         rs = ps.executeQuery();
         if (rs.next()) {
             obj = new Paciente();

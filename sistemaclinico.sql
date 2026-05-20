@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 12-05-2026 a las 01:33:08
+-- Tiempo de generación: 19-05-2026 a las 20:50:16
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -37,6 +37,14 @@ CREATE TABLE `cita` (
   `medico_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
+--
+-- Volcado de datos para la tabla `cita`
+--
+
+INSERT INTO `cita` (`id`, `fecha`, `hora`, `estado`, `motivo`, `paciente_id`, `medico_id`) VALUES
+(1, '2026-05-12', '09:30:00', 'Asistida', '----- PACIENTE ENCONTRADO -----\n\nNombre: Juan Jose Acevedo\nDocumento: 1025532724\nEdad: 19\nDireccion: null\nHistorial: Historial Medico:', 3, 1),
+(2, '2026-05-09', '14:00:00', 'Completada', '----- PACIENTE ENCONTRADO -----\n\nNombre: Teresa Melo\nDocumento: 15451\nEdad: 30\nDireccion: null\nHistorial:', 5, 1);
+
 -- --------------------------------------------------------
 
 --
@@ -49,6 +57,13 @@ CREATE TABLE `medico` (
   `num_licencia` varchar(20) NOT NULL,
   `horario` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+--
+-- Volcado de datos para la tabla `medico`
+--
+
+INSERT INTO `medico` (`id`, `especialidad`, `num_licencia`, `horario`) VALUES
+(1, 'Cardiología', 'LIC12345', 'Lunes a Viernes 8-16');
 
 -- --------------------------------------------------------
 
@@ -64,6 +79,18 @@ CREATE TABLE `paciente` (
   `prepagada_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
+--
+-- Volcado de datos para la tabla `paciente`
+--
+
+INSERT INTO `paciente` (`id`, `edad`, `direccion`, `historial_medico`, `prepagada_id`) VALUES
+(1, 12, 'asdsad', 'Historial Medico:', NULL),
+(2, 12, 'asdsad', 'Historial Medico:', NULL),
+(3, 19, 'Calle 10', 'Historial Medico:', NULL),
+(4, 29, 'asdasd', 'Historial Medico: Hola Como vas', NULL),
+(5, 30, 'calle 6', '', NULL),
+(6, 8, 'Calle 6', 'Historial Medico:', NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -77,8 +104,21 @@ CREATE TABLE `persona` (
   `documento` varchar(20) NOT NULL,
   `telefono` varchar(20) DEFAULT NULL,
   `correo` varchar(100) DEFAULT NULL,
-  `activo` bit(1) NOT NULL DEFAULT b'1'
+  `activo` bit(1) NOT NULL DEFAULT b'1',
+  `password` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+--
+-- Volcado de datos para la tabla `persona`
+--
+
+INSERT INTO `persona` (`id`, `nombre`, `apellido`, `documento`, `telefono`, `correo`, `activo`, `password`) VALUES
+(1, 'asdsa', 'asdsad', 'asdsad', 'asdsad', 'asdsad', b'1', NULL),
+(2, 'asdasd', 'asdasd', 'asdas', 'asdasd', 'asdasd', b'0', NULL),
+(3, 'Juan Jose', 'Acevedo', '1025532724', '3213284988', 'chiquibarr', b'1', NULL),
+(4, 'Gholdy', 'AcevedoASD', '1312', '31231245', 'asdas', b'1', NULL),
+(5, 'Teresa', 'Melo', '15451', '321 328 4988', 'tTeresa', b'1', NULL),
+(6, 'Isabella', 'Sierra', '121225', '3124233933', 'isabella@gmail.com', b'1', NULL);
 
 -- --------------------------------------------------------
 
@@ -207,13 +247,13 @@ ALTER TABLE `usuario`
 -- AUTO_INCREMENT de la tabla `cita`
 --
 ALTER TABLE `cita`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `persona`
 --
 ALTER TABLE `persona`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de la tabla `prepagada`

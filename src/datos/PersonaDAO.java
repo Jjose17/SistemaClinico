@@ -179,6 +179,53 @@ public class PersonaDAO implements CrudSimpleInterface<Persona>{
         }
         return resp;
     }
+    
+    // ESTOS METODOS NOS VAN A AYUDAR PARA PODER TENER LA INFORMACION EN LOS COMBOS
+    
+    public List<String> obtenerTiposDocumento() {
+        List<String> lista = new ArrayList<>();
+        // Ajusta 'tipo_documento' y 'nombre_tipo' a los nombres reales en tu BD
+        String sql = "SELECT nombre_tipo FROM tipo_documento ORDER BY nombre_tipo ASC"; 
+        try {
+            ps = CON.conectar().prepareStatement(sql);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                lista.add(rs.getString("nombre_tipo"));
+            }
+            ps.close();
+            rs.close();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error al cargar tipos de documento: " + e.getMessage());
+        } finally {
+            ps = null;
+            rs = null;
+            CON.desconectar();
+        }
+        return lista;
+    }
+
+    public List<String> obtenerEntidades() {
+        List<String> lista = new ArrayList<>();
+        // Ajusta 'entidad' y 'nombre_entidad' a los nombres reales en tu BD
+        String sql = "SELECT nombre_entidad FROM entidad ORDER BY nombre_entidad ASC"; 
+        try {
+            ps = CON.conectar().prepareStatement(sql);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                lista.add(rs.getString("nombre_entidad"));
+            }
+            ps.close();
+            rs.close();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error al cargar entidades: " + e.getMessage());
+        } finally {
+            ps = null;
+            rs = null;
+            CON.desconectar();
+        }
+        return lista;
+    }
+    
    //a
     }
 

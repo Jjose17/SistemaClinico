@@ -28,7 +28,7 @@ public class PrepagadaDAO implements CrudSimpleInterface<Prepagada> {
     public List<Prepagada> listar(String texto) {
         List<Prepagada> registros = new ArrayList<>();
         try{
-            ps=CON.conectar().prepareStatement("SELECT id, nombre, tipo_plana, cobertura, telefono, activo "
+            ps=CON.conectar().prepareStatement("SELECT id, nombre, tipo_plan, cobertura, telefono, activo "
                     + "FROM prepagada WHERE nombre LIKE ?");
             ps.setString(1, "%" + texto + "%");
             rs=ps.executeQuery();
@@ -52,7 +52,7 @@ public class PrepagadaDAO implements CrudSimpleInterface<Prepagada> {
     public boolean insertar(Prepagada obj) {
         resp=false;
         try{
-            CON.conectar().prepareStatement("INSERT INTO prepagada (nombre, tipo_plan, cobertura, telefono, activo) "
+          ps= CON.conectar().prepareStatement("INSERT INTO prepagada (nombre, tipo_plan, cobertura, telefono, activo) "
                     + "VALUES (?, ?, ?, ?, 1)");
             ps.setString(1, obj.getNombre());
             ps.setString(2, obj.getTipoPlan());
@@ -144,7 +144,7 @@ public class PrepagadaDAO implements CrudSimpleInterface<Prepagada> {
     public boolean existe(String texto) {
         resp=false;
         try{
-            ps=CON.conectar().prepareStatement("SELECT id FROM prepgada WHERE nombre = ?");
+            ps=CON.conectar().prepareStatement("SELECT id FROM prepagada WHERE nombre = ?");
             ps.setString(1, texto);
             rs=ps.executeQuery();
             resp=rs.next();

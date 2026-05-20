@@ -176,4 +176,51 @@ public class UsuarioDAO implements CrudSimpleInterface<Usuario> {
         return resp;
     }
     
+  public boolean login(String documento, String clave) {
+        resp = false;
+        String sql = "SELECT * FROM usuario WHERE num_documento = ? AND clave = ?";
+        try {
+            // Usamos la variable de conexión global de tu clase (CON)
+            ps = CON.conectar().prepareStatement(sql);
+            ps.setString(1, documento);
+            ps.setString(2, clave);
+            
+            rs = ps.executeQuery();
+            resp = rs.next(); // true si encuentra coincidencia
+            
+            ps.close();
+            rs.close();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error en el login del DAO: " + e.getMessage(), "Error Base de Datos", JOptionPane.ERROR_MESSAGE);
+        } finally {
+            ps = null;
+            rs = null;
+            CON.desconectar();
+        }
+        return resp;
+    }
+    
+    // 🚀 Corregido: Agregamos 'String correo' a los parámetros para eliminar el error visual
+    public boolean registrar(String nombre, String documento, String clave, String correo) {
+        resp = false;
+    // 🚀 Dejamos el '2' fijo porque corresponde al rol 'Secretaria' que insertamos arriba
+    String sql = "INSERT INTO usuario (nombre, num_documento, clave, rol_id, correo, activo) VALUES (?, ?, ?, 2, ?, 1)";
+    try {
+        ps = CON.conectar().prepareStatement(sql);
+        
+        ps.setString(1, nombre);
+        ps.setString(2, documento);
+        ps.setString(3, clave);
+        ps.setString(4, correo);
+        
+        resp = ps.executeUpdate() > 0;
+        ps.close();
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(null, "Error en el registro del DAO: " + e.getMessage(), "Error Base de Datos", JOptionPane.ERROR_MESSAGE);
+    } finally {
+        ps = null;
+        CON.desconectar();
+    }
+    return resp;
 }
+    }

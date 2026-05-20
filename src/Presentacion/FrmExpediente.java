@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JInternalFrame.java to edit this template
- */
+
 package Presentacion;
 
 import Negocio.PacienteControl;
@@ -11,15 +8,9 @@ import javax.swing.JOptionPane;
 import entidades.Prepagada;
 import datos.PrepagadaDAO;
 
-/**
- *
- * @author chiqu
- */
 public class FrmExpediente extends javax.swing.JInternalFrame {
 
-    /**
-     * Creates new form FrmExpediente
-     */
+    
     public FrmExpediente() {
         initComponents();
     }
@@ -33,6 +24,8 @@ public class FrmExpediente extends javax.swing.JInternalFrame {
             lblDocumentoExpediente.setText("Documento: " +p.getDocumento());
             lblEdadExpediente.setText("Edad: "+p.getEdad() + " años");
             txtAreaHistorialExpediente.setText(p.getHistorialMedico());
+            datos.CitaDAO controlCita = new datos.CitaDAO();
+            tablaCitas.setModel(controlCita.listarHistorialCitasPorPaciente(idPaciente));
         }else{
             JOptionPane.showMessageDialog(this, "No hay historial clinico para esta persona", "Historial", JOptionPane.WARNING_MESSAGE);
         }
